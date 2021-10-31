@@ -42,23 +42,46 @@ async function run() {
             res.send(tours);
         })
 
+        // getting adding element
+        app.post('/addtour', async (req, res) => {
 
-        app.get("/addTour", async (req, res) => {
+            const result = await travelCollection.insertOne(req.body);
+            res.send(result.insertedId);
+        })
+
+
+
+        // all booked tour
+        app.post("/addtour/:id", async (req, res) => {
+
+            const result = await tourCollection.insertOne(req.body);
+            res.send(result);
+
+        })
+
+        app.get("/addtour", async (req, res) => {
+            console.log(req)
             const result = await tourCollection.find({}).toArray();
             res.send(result);
+            console.log(result)
         });
 
+
+
+
         // getting add booking
-        app.post("/addtour", async (req, res) => {
+        app.post("/addTour", async (req, res) => {
             // console.log(req.body);
             const result = await tourCollection.insertOne(req.body);
             res.send(result.insertedId);
         })
+
+
         // get all booking 
         app.get("/booking", async (req, res) => {
-
+            // console.log(req)
             const result = await tourCollection.find({}).toArray();
-            // console.log(result)
+
             res.send(result);
         })
         // delete booking
@@ -66,35 +89,34 @@ async function run() {
         app.delete("/deleteBooking/:id", async (req, res) => {
 
             const result = await tourCollection.deleteOne({ _id: ObjectId(req.params.id) });
-            console.log(result)
+            // console.log(result)
         })
+
+
         // posting my booking
         app.post('/addMyBooking', async (req, res) => {
             const result = await bookingCollection.insertOne(req.body);
             res.send(result)
         })
+
+
         // gettting my booking 
         app.get('/mybooking/:email', async (req, res) => {
-
             const result = await bookingCollection.find({ email: req.params.email }).toArray();
             res.send(result);
+            console.log(result)
+
         })
 
 
-
-
-
-
+        // delete api from manage evnts
         app.delete("/addTour/:id", async (req, res) => {
-            console.log(req.params.id);
-            const result = await tourCollection.deleteOne({
-                _id: ObjectId(req.params.id),
-            });
-            res.send(result);
-        });
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await tourCollection.deleteOne(query);
 
 
-
+        })
 
     }
     finally {
@@ -105,12 +127,6 @@ async function run() {
 }
 
 run().catch(console.dir);
-
-
-
-
-
-
 
 
 
