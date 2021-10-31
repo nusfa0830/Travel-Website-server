@@ -63,7 +63,7 @@ async function run() {
             console.log(req)
             const result = await tourCollection.find({}).toArray();
             res.send(result);
-            console.log(result)
+            // console.log(result)
         });
 
 
@@ -86,10 +86,11 @@ async function run() {
         })
         // delete booking
 
-        app.delete("/deleteBooking/:id", async (req, res) => {
+        app.delete("/booking/:id", async (req, res) => {
 
             const result = await tourCollection.deleteOne({ _id: ObjectId(req.params.id) });
-            // console.log(result)
+
+
         })
 
 
@@ -97,6 +98,7 @@ async function run() {
         app.post('/addMyBooking', async (req, res) => {
             const result = await bookingCollection.insertOne(req.body);
             res.send(result)
+
         })
 
 
@@ -112,9 +114,10 @@ async function run() {
         // delete api from manage evnts
         app.delete("/addTour/:id", async (req, res) => {
             const id = req.params.id;
+
             const query = { _id: ObjectId(id) }
             const result = await tourCollection.deleteOne(query);
-
+            // console.log(result)
 
         })
 
